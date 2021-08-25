@@ -1,0 +1,203 @@
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.12
+import Song 1.0
+
+ApplicationWindow{
+    width:500
+    height:450
+    visible: true
+    property alias song: song
+    property var map:{"标题":" ","艺术家":" ","唱片集":" ","注释":" ","日期":" ","音轨号":" ","流派":" "};
+
+    function get_Tags_Meta(){
+        titleInput.text = " ";
+        artistInput.text = " ";
+        albumInput.text = " ";
+        annotationInput.text = " ";
+        yearInput.text = " ";
+        trackInput.text = " ";
+        generInput.editText = " ";
+
+        titleInput.text=song.Tags["标题"];
+        artistInput.text=song.Tags["艺术家"];
+        albumInput.text=song.Tags["唱片集"];
+        annotationInput.text=song.Tags["注释"];
+        if(song.Tags["日期"]===0) {
+            yearInput.text=" ";
+        } else {
+            yearInput.text=song.Tags["日期"];
+        }
+        if(song.Tags["音轨号"]===0) {
+            trackInput.text= " ";
+        } else {
+            trackInput.text= song.Tags["音轨号"];
+        }
+        generInput.editText=song.Tags["流派"];
+    }
+
+    function set_Tag_Meta(){
+        map["标题"]=titleInput.text;
+        console.log(map["标题"])
+        map["艺术家"]=artistInput.text;
+        map["唱片集"]=albumInput.text;
+        map["注释"]=annotationInput.text;
+        if(yearInput.text===" ") {
+           map["日期"]=0;
+        } else {
+            map["日期"]=yearInput.text;
+        }
+        if(trackInput.text===" ") {
+           map["音轨号"]=0;
+        } else {
+            map["音轨号"]=trackInput.text;
+        }
+        map["流派"]=generInput.editText;
+    }
+
+    ColumnLayout{
+        anchors.fill: parent
+        GroupBox{
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: parent.height-bottomBtn.height-20
+            ColumnLayout{
+                width: parent.width
+                spacing: 10
+                Text{
+                    font.pointSize: 12
+                    text: qsTr(" 音频信息")
+                }
+                ColumnLayout{
+                    Layout.fillWidth: true
+                    spacing: 10
+                    RowLayout{
+                        Layout.fillWidth: true
+                        Text {
+                            id:title
+                            text: qsTr("标   题:")
+                        }
+                        TextField{
+                            id: titleInput
+                            Layout.fillWidth: true
+                            focus: true
+                        }
+                    }
+                    RowLayout{
+                        Layout.fillWidth: true
+                        Text {
+                            id:artist
+                            text: qsTr("艺术家:")
+                        }
+                        TextField{
+                            id: artistInput
+                            Layout.fillWidth: true
+                        }
+                    }
+                    RowLayout{
+                        Layout.fillWidth: true
+                        Text {
+                            id:album
+                            text: qsTr("唱片集:")
+                        }
+                        TextField{
+                            id: albumInput
+                            Layout.fillWidth: true
+                        }
+                    }
+                    RowLayout{
+                        Layout.fillWidth: true
+                        RowLayout{
+                            Layout.fillWidth: true
+                            RowLayout{
+                                Layout.fillWidth: true
+                                Text {
+                                    id:track
+                                    text: qsTr("音轨号:")
+                                }
+                                TextField{
+                                    id: trackInput
+                                    Layout.fillWidth: true
+                                }
+                            }
+                            RowLayout{
+                                Layout.fillWidth: true
+                                Text {
+                                    id:year
+                                    text: qsTr("日 期:")
+                                }
+                                TextField{
+                                    id: yearInput
+                                    Layout.fillWidth: true
+                                }
+                            }
+                        }
+                    }
+                    RowLayout{
+                        Layout.fillWidth: true
+                        Text {
+                            id: gener
+                            text: qsTr("流 派：")
+                        }
+                        ComboBox{
+                            Layout.fillWidth: true
+                            id:generInput
+                            editable: true
+                            currentIndex: -1
+                        //    highlighted: Rectangle{color: "lightblue";width: genreInput.width}
+                            model:ListModel{
+                                id:genreModel
+                                ListElement{text:"Acousic"}
+                                ListElement{text:"Abstract"}
+                                ListElement{text:"A Cappella"}
+                                ListElement{text:"Acid"}
+                                ListElement{text :"Acid Jazz"}
+
+                            }
+                        }
+                    }
+                    RowLayout{
+                        Text {
+                            id: annotation
+                            text: qsTr("注 释：")
+                        }
+                        TextField{
+                            id: annotationInput
+                            Layout.fillWidth: true
+                        }
+                    }
+                }
+            }
+        }
+        RowLayout{
+            id:bottomBtn
+            Layout.margins: 10
+            spacing: parent.width-labelButton.width-fileLayout.width-20
+            Button{
+                id:labelButton
+                text: "从文件名获取标签"
+            }
+            RowLayout{
+                id:fileLayout
+                Button{
+                    text:"保存到文件"
+                    onClicked: {
+                        set_Tag_Meta();
+                        var path = new String(content.musicPlayer.audio.source).slice(7)
+                        song.saveTags(path,map)
+                    }
+                }
+                Button{
+                    text: "关闭"
+                    onClicked: {
+                        close()
+                    }
+                }
+            }
+        }
+    }
+
+    Song{
+        id: song
+    }
+
+}

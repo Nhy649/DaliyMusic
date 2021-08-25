@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Actions.qml</file>
+        <file>Dialogs.qml</file>
+        <file>Content.qml</file>
+        <file>MusicPlayer.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>SongLabelDialog.qml</file>
+        <file>LyricDialog.qml</file>
+        <file>LyricEditorActions.qml</file>
+        <file>LyricEditorDialogs.qml</file>
+        <file>LyricPage.qml</file>
+        <file>PlaylistPage.qml</file>
+        <file>KeyMapDialog.qml</file>
+        <file>LyricSarchDialog.qml</file>
+        <file>SongSarchDialog.qml</file>
+        <file>RecentlyPlayedDialog.qml</file>
+        <file>MiniDialog.qml</file>
+        <file>LyricShowDialog.qml</file>
+        <file>Spectrogram.qml</file>
+    </qresource>
+</RCC>
