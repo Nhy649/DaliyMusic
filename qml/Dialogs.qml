@@ -27,7 +27,7 @@ Item {
         id:fileMusicDialog
         title: "Please choose a music file"
         folder:shortcuts.documents
-        nameFilters: ["Audio Files(*.mp3 *.ogg *.flac)"]
+        nameFilters: ["Audio Files(*.mp3 /**.ogg *.flac*/)"]
         selectMultiple: true
     }
 

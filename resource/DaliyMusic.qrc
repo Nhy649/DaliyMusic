@@ -42,5 +42,13 @@
         <file>image/cut.png</file>
         <file>image/copy.png</file>
         <file>image/exit.png</file>
+        <file>image/快进.png</file>
+        <file>image/快退.png</file>
+        <file>image/cur_playlist.png</file>
+        <file>image/pause1.png</file>
+        <file>image/play1.png</file>
+        <file>image/volume1.png</file>
+        <file>image/last1.png</file>
+        <file>image/next1.png</file>
     </qresource>
 </RCC>

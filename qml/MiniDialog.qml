@@ -49,14 +49,14 @@ ApplicationWindow{
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             ToolButton {
                 id:musicPrevious
-                icon.source: "qrc:/image/pass.png"
+                icon.source: "qrc:/image/上一曲.png"
                 onClicked: {
                     actions.previousAction.triggered()
                 }
             }
             ToolButton{
                 id:musicStart
-                icon.source:"qrc:/image/play.png"
+                icon.source:"qrc:/image/播放.png"
                 visible: true
                 onClicked: {
                     actions.playAction.triggered()
@@ -65,7 +65,7 @@ ApplicationWindow{
             ToolButton{
                 id:musicPause
                 visible: false
-                icon.source:"qrc:/image/pause.png"
+                icon.source:"qrc:/image/暂停.png"
                 onClicked: {
                     actions.pauseAction.triggered()
                 }
@@ -73,21 +73,21 @@ ApplicationWindow{
 
             ToolButton {
                 id:musicNext
-               icon.source:"qrc:/image/back.png"
+               icon.source:"qrc:/image/下一曲.png"
                 onClicked: {
                     actions.nextAction.triggered()
                 }
             }
             ToolButton {
                 id:musicFastfowardfivescd
-                icon.source:"qrc:/image/上一曲.png"
+                icon.source:"qrc:/image/快退.png"
                 onClicked: {
                     actions.backfiveScdAction.triggered()
                 }
             }
             ToolButton {
                 id:musicBackfivescd
-                icon.source:"qrc:/image/下一曲.png"
+                icon.source:"qrc:/image/快进.png"
                 onClicked: {
                     actions.fastforwardfiveScdAction.triggered()
                 }

@@ -7,6 +7,7 @@ ApplicationWindow {
     width: 920
     height: 700
     visible: true
+    title: qsTr("DailyMusic")
     property alias rootImage:name
     property var myMusicArray:[]
     background: Image {
@@ -89,7 +90,7 @@ ApplicationWindow {
         Menu{
             title: qsTr("&工具")
             contentData: [
-              //  actions.showMenubarAction,
+                //  actions.showMenubarAction,
                 actions.recentlayPlaydAction,
                 actions.trackInformationAction,
                 actions.keyMapAction
@@ -132,11 +133,11 @@ ApplicationWindow {
             dialogs.lyricDialog.textArea.text = ""
         }
 
-//        showMenubarAction.onCheckedChanged: {
-//            menuBar.visible=menuBar.visible ? false: true;  //显示或隐藏工具栏
-//        }
+        //        showMenubarAction.onCheckedChanged: {
+        //            menuBar.visible=menuBar.visible ? false: true;  //显示或隐藏工具栏
+        //        }
         aboutAction.onTriggered: {
-           dialogs.openAboutDialog()
+            dialogs.openAboutDialog()
         }
         keyMapAction.onTriggered: {
             dialogs.keyMapDialog.visible=true
@@ -212,6 +213,7 @@ ApplicationWindow {
         }
         dialogs.songSarchDialog.networkPlay=false
     }
+
     Component.onCompleted: {
         var i = 0;
         dialogs.lyricDialog.fileIo.getPlaylist();
@@ -221,14 +223,15 @@ ApplicationWindow {
             content.playlistPage.songListModel.append({"chapter":content.musicPlayer.fileName})
         }
         content.playlistPage.songSerialNumber=length
-        content.playlistPage.songListView.currentIndex = length-1
+        content.playlistPage.songListView.currentIndex = length - 1
         if(length!==0) {
-            content.musicPlayer.audio.source="file://"+dialogs.lyricDialog.fileIo.urls[length-1]
-            content.spectrogram.getVertices();
+//            content.spectrogram.songPath="file://"+dialogs.lyricDialog.fileIo.urls[length-1]
+//            content.spectrogram.getVertices();
             content.lyricPage.lyricText.visible=true
         } else {
             content.lyricPage.lyricText.visible=false
         }
+//        content.swithToPlaylist()
     }
 
 }

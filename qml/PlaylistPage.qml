@@ -12,89 +12,77 @@ Item {
     property alias songListModel:songListModel
     property alias songListView:songListView
     property alias songDelegate:songDelegate
+
+
     Rectangle{
-          anchors.fill: parent
-          opacity: 0.6
-          ListView{
-              id:songListView
-              anchors.fill: parent
-              delegate: songDelegate
-              model: songListModel
-          }
-          ListModel{
-              id:songListModel
-          }
-          Component{
-              id:songDelegate
-              Rectangle{
-                  width: 300
-                  height: 40
-                  color:ListView.isCurrentItem ? "lightgrey" : "white"
-                  Text {
-                      id: serialNumberText
-                      text: index+1
-                      font.pointSize: 15
-                      width: 40
-                      color: "Teal"
-                      anchors.rightMargin: 40
-                  }
-                  Text {
-                      id: chapterText
-                      text: chapter
-                      color: "Teal"
-                      anchors.left: serialNumberText.right
-                      font.pointSize: 15
-                  }
-                  MouseArea{
-                      id:mouseArea
-                      acceptedButtons: Qt.RightButton|Qt.LeftButton   //点击右键，content 响应右键的上下文菜单
-                      anchors.fill: parent
-                      onClicked: {
-                          if(mouse.button==Qt.RightButton) {
-                              mX=mouseX
-                              mY=mouseY
-                              menu1.open()
-                          }else{
-                              actions.pauseAction.triggered()
-                              dialogs.songSarchDialog.networkPlay=false
-                              content.singerText.text=""
-                              songListView.currentIndex=index
-                              dialogs.lyricDialog.fileIo.readUrls(index, "../播放列表.txt")
-                              console.log(dialogs.lyricDialog.fileIo.source)
-                              content.musicPlayer.audio.source="file://"+dialogs.lyricDialog.fileIo.source
-                              rootImage.source = "qrc:/image/背景3.png"
-                              content.leftImage.source = "qrc:/image/背景3.png"
-                              content.spectrogram.speTimer.running = false
-                              content.spectrogram.getVertices()
+        anchors.fill: parent
+        opacity: 0.6
+        ListView{
+            id:songListView
+            anchors.fill: parent
+            delegate: songDelegate
+            model: songListModel
+        }
+        ListModel{
+            id:songListModel
+        }
+        Component{
+            id:songDelegate
+            Rectangle{
+                width: 300
+                height: 40
+                color:ListView.isCurrentItem ? "lightgrey" : "white"
+                Text {
+                    id: serialNumberText
+                    text: index+1
+                    font.pointSize: 15
+                    width: 40
+                    color: "Teal"
+                    anchors.rightMargin: 40
+                }
+                Text {
+                    id: chapterText
+                    text: chapter
+                    color: "Teal"
+                    anchors.left: serialNumberText.right
+                    font.pointSize: 15
+                }
+                TapHandler{
+                    acceptedButtons: Qt.RightButton //点击右键，content 响应右键的上下文菜单
+                    onTapped: {
+                        mX=eventPoint.position.x
+                        mY=eventPoint.position.y
+                        menu1.open()
+                    }
+                }
 
-                              content.lyricPage.lyricListModel.clear()
-                              content.lyricPage1.lyricListModel.clear();
+                TapHandler{
+                    acceptedButtons:Qt.LeftButton
+                    onTapped: {
+                            content.musicPlayer.play(index)
+                    }
+                }
+                Menu{
+                    id:menu1
+                    x:mX
+                    y:mY
+                    MenuItem{
+                        Action{
+                            text: qsTr("play...")
+                            icon.source: "qrc:/image/播放.png"
+                            onTriggered: {
+                                console.log("playAction in PlaylistPage.qml")
+                                content.musicPlayer.play(content.playlistPage.songListView.currentIndex)
+                            }
+                        }
+                    }
 
-                              content.fileNameText.text=myMusicArray[index]
-                              if(dialogs.lyricDialog.testNum===1) {
-                                  dialogs.lyricDialog.testNum=0
-                                  dialogs.lyricDialog.timerTest.running=false
-                                  content.lyricPage.lyricListModel.clear()
-                                  content.lyricPage1.lyricListModel.clear()
-                                  content.lyricPage.lyricText.visible=true
-                              }
-                          }
-                      }
-                      onDoubleClicked: {
-                          actions.playAction.triggered()
-                      }
-                  }
-                  Menu{
-                      id:menu1
-                      x:mX
-                      y:mY
-                      contentData: [
-                          actions.playAction,
-                          actions.pauseAction,
-                          actions.deleteAction
-                      ]
-                 }
-              }
-          }
+                    contentData: [
+                        actions.pauseAction,
+                        actions.deleteAction
+                    ]
+                }
+            }
+        }
     }
 }

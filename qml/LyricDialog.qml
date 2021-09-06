@@ -18,12 +18,12 @@ QQ.ApplicationWindow {
 
     property alias fileIo:fileIo
     property alias lyric_id:lyric_id
-    property var timeStampIndex:0
+    property int timeStampIndex:0
     property bool timeFlag:false;
     property alias timerTest:timerTest
     property alias action:action
     property alias textArea:textArea
-    property var testNum:0
+    property int testNum:0
 
     function getColumn(){
         var pos = textArea.cursorPosition;

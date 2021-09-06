@@ -23,6 +23,7 @@ Item {
         }
     }
 
+
     Text {
         id: lyricText
         text: qsTr("当前无歌词")
@@ -35,7 +36,6 @@ Item {
         delegate: lyricDelegate
         anchors.fill: parent
         visible: false
-        currentIndex: -1
         spacing: 30
     }
     ListModel{

@@ -11,11 +11,13 @@ Canvas{
     property int pcount: 0
     property var yend: 0.0
     property var vertices:[]
+    property string songPath: ""
 
     function getVertices(){
         vertices = []
-        var str = new String(content.musicPlayer.audio.source).slice(7)
-        content.spectrogram.decode.decode(str)      //得到绘制顶点
+//        var str = new String(content.musicPlayer.audio.source).slice(7)
+        console.log("getVertices in Spectrogram.qml",songPath)
+        content.spectrogram.decode.decode(songPath)      //得到绘制顶点
         vertices = decode.vertices
         pcount = 0
     }

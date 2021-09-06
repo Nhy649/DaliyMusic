@@ -1,3 +1,6 @@
+//2021.09.01
+//please comment your codes
+//
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 Item {
@@ -48,11 +51,13 @@ Item {
         text: qsTr("打开文件夹")
         icon.source: "qrc:/image/文件夹.png"
     }
-    Action{
+
+    Action{   //playAction
         id:play
         text: qsTr("播放")
         icon.source: "qrc:/image/播放.png"
         onTriggered: {
+//            content.musicPlayer.play(content.playlistPage.songListView.currentIndex)
             if(content.musicPlayer.fileName!==" ") {
                 content.musicPlayer.audio.play()
                 content.spectrogram.speTimer.running = true
@@ -76,6 +81,67 @@ Item {
                     dialogs.songSarchDialog.showLyrics();
                 }
             }
+        }
+    }
+    Action{
+        id:previous
+        text: qsTr("上一曲")
+        icon.source:  "qrc:/image/上一曲.png"
+        onTriggered: {
+            content.spectrogram.speTimer.running = false
+            if(dialogs.songSarchDialog.networkPlay){
+                var num = dialogs.songSarchDialog.searchlistView.currentIndex
+                if(num === 0){
+                    num = dialogs.songSarchDialog.songListModel.count-1
+                }else{
+                    num--
+                }
+                dialogs.songSarchDialog.searchlistView.currentIndex = num
+                dialogs.songSarchDialog.play1.triggered()
+            }else{
+                if(content.playlistPage.songListView.currentIndex === 0){
+                    content.playlistPage.songListView.currentIndex = content.playlistPage.songSerialNumber-1
+                }else{
+                    content.playlistPage.songListView.currentIndex--;
+                }
+                play.triggered()
+            }
+//            if(dialogs.lyricDialog.timerTest.running) {
+//                dialogs.lyricDialog.timerTest.running=false
+//                content.lyricPage.lyricListView.visible=false
+//                content.lyricPage1.lyricListView.visible=false
+//            }
+        }
+    }
+    Action{
+        id:next
+        text: qsTr("下一曲")
+        icon.source:  "qrc:/image/下一曲.png"
+        onTriggered: {
+            content.spectrogram.speTimer.running = false
+            if(dialogs.songSarchDialog.networkPlay){
+                var num = dialogs.songSarchDialog.searchlistView.currentIndex
+                if(num === dialogs.songSarchDialog.songListModel.count-1){
+                    num = 0
+                }else{
+                    num++
+                }
+                dialogs.songSarchDialog.searchlistView.currentIndex = num
+                dialogs.songSarchDialog.play1.triggered()
+            }else{
+                if(content.playlistPage.songListView.currentIndex === content.playlistPage.songSerialNumber-1){
+                    content.playlistPage.songListView.currentIndex = 0
+                }else{
+                    content.playlistPage.songListView.currentIndex++;
+                    console.log("next in Actions.qml")
+                }
+                play.triggered()
+            }
+//            if(dialogs.lyricDialog.timerTest.running) {
+//                dialogs.lyricDialog.timerTest.running=false
+//                content.lyricPage.lyricListView.visible=false
+//                content.lyricPage1.lyricListView.visible=false
+//            }
         }
     }
 
@@ -242,89 +308,12 @@ Item {
             }
         }
     }
-    Action{
-        id:previous
-        text: qsTr("上一曲")
-        icon.source:  "qrc:/image/上一曲.png"
-        onTriggered: {
-            content.spectrogram.speTimer.running = false
-            if(dialogs.songSarchDialog.networkPlay){
-                var num = dialogs.songSarchDialog.searchlistView.currentIndex
-                if(num === 0){
-                    num = dialogs.songSarchDialog.songListModel.count-1
-                }else{
-                    num--
-                }
-                dialogs.songSarchDialog.searchlistView.currentIndex = num
-                dialogs.songSarchDialog.play1.triggered()
-            }else{
-                if(content.playlistPage.songListView.currentIndex === 0){
-                    content.playlistPage.songListView.currentIndex = content.playlistPage.songSerialNumber-1
-                }else{
-                    content.playlistPage.songListView.currentIndex--;
-                }
-                dialogs.lyricDialog.fileIo.readUrls(content.playlistPage.songListView.currentIndex, "../播放列表.txt")
-                content.musicPlayer.audio.source = "file://"+dialogs.lyricDialog.fileIo.source
-                content.musicPlayer.fileName=content.musicPlayer.getMusicName(dialogs.lyricDialog.fileIo.source)
-                content.spectrogram.getVertices()
-                content.spectrogram.speTimer.running = true
-                content.musicPlayer.audio.play()
-                content.musicPlayer.start.visible=false
-                content.musicPlayer.pause.visible=true
-                dialogs.miniDialog.musicStart.visible = false
-                dialogs.miniDialog.musicPause.visible = true
-            }
-            if(dialogs.lyricDialog.timerTest.running) {
-                dialogs.lyricDialog.timerTest.running=false
-                content.lyricPage.lyricListView.visible=false
-                content.lyricPage1.lyricListView.visible=false
-            }
-        }
-    }
-    Action{
-        id:next
-        text: qsTr("下一曲")
-        icon.source:  "qrc:/image/下一曲.png"
-        onTriggered: {
-            content.spectrogram.speTimer.running = false
-            if(dialogs.songSarchDialog.networkPlay){
-                var num = dialogs.songSarchDialog.searchlistView.currentIndex
-                if(num === dialogs.songSarchDialog.songListModel.count-1){
-                    num = 0
-                }else{
-                    num++
-                }
-                dialogs.songSarchDialog.searchlistView.currentIndex = num
-                dialogs.songSarchDialog.play1.triggered()
-            }else{
-                if(content.playlistPage.songListView.currentIndex === content.playlistPage.songSerialNumber-1){
-                    content.playlistPage.songListView.currentIndex = 0
-                }else{
-                    content.playlistPage.songListView.currentIndex++;
-                }
-                dialogs.lyricDialog.fileIo.readUrls(content.playlistPage.songListView.currentIndex, "../播放列表.txt")
-                content.musicPlayer.audio.source = "file://"+dialogs.lyricDialog.fileIo.source
-                content.musicPlayer.fileName=content.musicPlayer.getMusicName(dialogs.lyricDialog.fileIo.source)
 
-                content.spectrogram.getVertices()
-                content.spectrogram.speTimer.running = true
-                content.musicPlayer.audio.play()
-                content.musicPlayer.start.visible=false
-                content.musicPlayer.pause.visible=true
-                dialogs.miniDialog.musicStart.visible = false
-                dialogs.miniDialog.musicPause.visible = true
-            }
-            if(dialogs.lyricDialog.timerTest.running) {
-                dialogs.lyricDialog.timerTest.running=false
-                content.lyricPage.lyricListView.visible=false
-                content.lyricPage1.lyricListView.visible=false
-            }
-        }
-    }
+
     Action{
         id:fastforwardfiveScd
         text: qsTr("快进5秒")
-        icon.source: "qrc:/image/下一曲.png"
+        icon.source: "qrc:/image/快进.png"
         onTriggered: {
             content.musicPlayer.audio.seek(content.musicPlayer.audio.position + 5000)
             if(dialogs.lyricDialog.timerTest.running) {
@@ -339,7 +328,7 @@ Item {
     Action{
         id:backfiveScd
         text: qsTr("快退5秒")
-        icon.source: "qrc:/image/上一曲.png"
+        icon.source: "qrc:/image/快退.png"
         onTriggered: {
             content.musicPlayer.audio.seek(content.musicPlayer.audio.position - 5000)
             if(dialogs.lyricDialog.timerTest.running) {

@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
+import FileIo 1.0
 Item {
     width: columnLayout.width*2
     height:columnLayout.height+musicPlayer.height
@@ -78,5 +79,60 @@ Item {
         id:musicPlayer
         anchors.bottom: parent.bottom
         anchors.left: parent.left
+    }
+
+    function swithToPlaylist(){
+        if(!playlistPage.visible) {
+            playlistPage.visible=true
+            lyricPage1.lyricListView.visible=true
+            lyricPage.visible=false
+            lyricPage.lyricListView.visible=false
+
+        }
+    }
+
+
+    function swithToLyric(){
+        if(playlistPage.visible) {
+            playlistPage.visible=false
+            lyricPage1.lyricListView.visible=false
+            lyricPage.visible=true
+            lyricPage.lyricListView.visible=true
+
+        }
+    }
+
+    FileIo{
+        id:lyricFileIo
+    }
+
+    function showLocalLyrics(){
+
+        dialogs.lyricDialog.action.testAction.enabled=false
+        if(content.playlistPage.visible) {
+            content.lyricPage.lyricListView.visible=false
+            content.lyricPage1.lyricListView.visible=true
+        } else {
+            content.lyricPage.lyricListView.visible=true
+            content.lyricPage1.lyricListView.visible=false
+        }
+
+
+        content.lyricPage.lyricText.visible=false
+
+        //                    dialogs.lyricDialog.lyric_id.lyric=kugou.lyrics
+//        console.log(dialogs.lyricDialog.lyric_id.lyric)
+        dialogs.lyricDialog.lyric_id.extract_timeStamp();
+
+        content.lyricPage.appendRight(dialogs.lyricDialog.lyric_id.painLyric.length)
+//        console.log(dialogs.lyricDialog.lyric_id.painLyric.length)
+        content.lyricPage.appendLeft(dialogs.lyricDialog.lyric_id.painLyric.length)
+
+        dialogs.lyricDialog.timeStampIndex=dialogs.lyricDialog.lyric_id.findTimeInterval("["+content.musicPlayer.currentTime+"]");
+        dialogs.lyricDialog.timerTest.interval=dialogs.lyricDialog.lyric_id.timeDif;     //设置第一个时间间隔
+        dialogs.lyricDialog.timeFlag=true;
+        dialogs.lyricDialog.timerTest.triggeredOnStart=1;
+        dialogs.lyricDialog.timerTest.running=true
+
     }
 }
